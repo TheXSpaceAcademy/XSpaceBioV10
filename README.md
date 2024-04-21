@@ -24,6 +24,7 @@ To install the XSpaceBioV10 library, download the ZIP file of the repository and
 Below is a simple example to get you started with the XSpaceBioV10 library by initializing an AD8232 sensor and reading values:
 
 ```cpp
+#include <Arduino.h>
 #include <XSpaceBioV10.h>
 
 XSpaceBioV10Board XSBoard;
