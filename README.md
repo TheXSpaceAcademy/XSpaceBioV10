@@ -37,6 +37,7 @@ void setup() {
 void loop() {
   double voltage = XSBoard.AD8232_GetVoltage(0); // Read differential voltage from sensor 0
   Serial.println(voltage);
+  delay(10);
 }
 
 ```

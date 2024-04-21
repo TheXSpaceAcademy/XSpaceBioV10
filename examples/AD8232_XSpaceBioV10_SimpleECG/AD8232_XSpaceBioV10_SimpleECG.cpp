@@ -1,6 +1,6 @@
 /**
  * @file    AD8232_XSpaceBioV10_SimpleECG.cpp
- * @brief   ECG Signal Acquisition Using XSpace Bio v1.0
+ * @brief   ECG Signal Acquisition Using XSpace Bio v1.0 Board
  * 
  * This example demonstrates how to set up and read an ECG signal from the AD8232 module
  * on the XSpace Bio v1.0 development board. It initializes the board, wakes up one of the
@@ -8,8 +8,7 @@
  * the heart rate. The readings are printed to the Serial Monitor. This example uses one of
  * the two available AD8232 modules on the board.
  * 
- * @author Your Name
- * @date   YYYY-MM-DD
+ * @author Pablo Cardenas
  */
 #include <Arduino.h>
 #include <XSpaceBioV10.h>

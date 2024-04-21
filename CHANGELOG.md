@@ -2,6 +2,12 @@
 
 This file documents all significant changes made to the XSpaceBioV10 library.
 
+## [Version 1.0.1] - 2024-04-21
+
+### Fixed
+- SPI dependency fixed
+
+
 ## [Version 1.0.0] - 2024-04-21
 
 #### Added

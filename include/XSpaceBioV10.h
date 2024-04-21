@@ -8,8 +8,7 @@
 #define XSPACEBIOV10_H
 
 #include <Arduino.h>
-#include <stdint.h>
-#include <WiFi.h>
+#include <SPI.h>
 
 //afe44xx Register definition
 #define CONTROL0      0x00
