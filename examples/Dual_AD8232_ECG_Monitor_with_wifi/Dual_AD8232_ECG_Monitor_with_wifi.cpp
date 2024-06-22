@@ -1,30 +1,16 @@
 /*
- * ECG Monitoring System Using Dual AD8232 Sensors with GENERIC ESP32-WROOM based BOARD
+ * ECG Monitoring System Using Dual AD8232 Sensors with ESP32
  * 
  * This program is designed to interface with two AD8232 heart rate sensors
  * using an ESP32 microcontroller. It demonstrates the initialization,
  * activation, and data reading from each sensor. The data collected from the sensors
- * is then sent to a computer over serial communication.
- * 
- * Pin Configuration:
- * - The pins for each AD8232 sensor are defined separately to allow for flexible hardware setup.
- * - Each sensor has dedicated pins for ECG output, shutdown control, and lead-off detection.
- *
- * Setup:
- * - Serial communication is established at 115200 bps.
- * - Each AD8232 sensor is initialized with specific pins and activated for data acquisition.
- * 
- * Loop:
- * - The program continuously reads the voltage output from each sensor and prints it to the serial monitor.
- * - A short delay is included in the loop to manage the rate of data output.
- *
- * This setup is useful for projects requiring real-time heart rate monitoring with multiple sensors,
- * and can be adapted for more complex health monitoring systems.
+ * is then sent to a computer over Wireless and Serial communication. BPM is calculated.
  *
  * Author: Pablo Cardenas
  */
 #include <Arduino.h>
 #include <XSpaceBioV10.h>
+#include <XSpaceIoT.h>
 
 // Pin definitions for the first AD8232 sensor setup
 #define ECG_OUT_A 34  // ECG output pin for the first AD8232 sensor
@@ -42,24 +28,60 @@
 
 // Create an instance of the XSpaceBioV10Board to interact with the hardware board
 XSpaceBioV10Board Board;
+XSEthernet XSnet;
+
+double GetBPM();
 
 void setup() {
   // Initialize serial communication at 115200 bps for output to the computer
   Serial.begin(115200);
+
+  XSnet.Wifi_init("Delta","c9aa28ba93");
+  XSnet.UDP_Connect("192.168.31.150",55000); //You can use Aurora app from www.xspace.pe
+  
   
   // Initialize both AD8232 sensors with their specific pin configurations
-  Board.AD8232_init(AD8232_A, SDN_A, LOH_A, LOL_A, ECG_OUT_A);
-  Board.AD8232_init(AD8232_B, SDN_B, LOH_B, LOL_B, ECG_OUT_B);
+  Board.AD8232_init(AD8232_XS1, SDN_A, LOH_A, LOL_A, ECG_OUT_A);
+  Board.AD8232_init(AD8232_XS2, SDN_B, LOH_B, LOL_B, ECG_OUT_B);
 
   // Activate the AD8232 sensors to begin ECG data acquisition
-  Board.AD8232_Wake(AD8232_A);
-  Board.AD8232_Wake(AD8232_B);
+  Board.AD8232_Wake(AD8232_XS1);
+  Board.AD8232_Wake(AD8232_XS2);
 }
 
+
+
+
+double ECGData[400];
+double ECGData_procesed[400];
+double ECGData_time[400];
+int i = 0;
+double bpm = 0;
+
 void loop() {
+
+  double AD8232_XS1_voltage = Board.AD8232_GetVoltage(AD8232_XS1);
+  double AD8232_XS2_voltage = Board.AD8232_GetVoltage(AD8232_XS2);
+
+  ECGData[i]=AD8232_XS1_voltage; //Storing a sammple
+  ECGData_time[i]=micros(); //Storing time (uS) of the current sammple
+
   // Read and print the voltage (millivolts) readings from both AD8232 sensors to the serial monitor
-  Serial.println((String)Board.AD8232_GetVoltage(AD8232_A) + " " + (String)Board.AD8232_GetVoltage(AD8232_B));
+  Serial.println((String)ECGData_procesed[i] + " " + (String)ECGData_procesed[i] + " " + (String)bpm);
+  XSnet.println((String)ECGData_procesed[i] + " " + (String)ECGData_procesed[i] + " " + (String)bpm);
+  
+  if(i==400){
+    bpm =  GetBPM();
+    i = 0;
+  }
 
   // Introduce a delay of 10 milliseconds to control the data output rate
   delay(10);
+}
+
+double GetBPM(){
+  double max,min,freq;
+  Board.SignalAnalizer(ECGData,ECGData_time,ECGData_procesed,400,&max,&min,&freq);
+
+  return freq*60.0;
 }
