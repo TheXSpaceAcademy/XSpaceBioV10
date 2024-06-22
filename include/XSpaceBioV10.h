@@ -103,6 +103,9 @@ class XSpaceBioV10Board {
     unsigned long AFE4490_read(uint8_t address);
 
   public:
+      double R_lookup[10] = {0.53861, 0.55417, 0.58322, 0.63, 0.697, 0.829, 0.9199, 1.04, 1.126, 1.2};
+      double SPO2_lookup[10] = {100, 99, 98, 97, 95, 90, 85, 80, 75, 70};
+
     // Initializes the board and any necessary peripherals or configurations.
     void init();
 

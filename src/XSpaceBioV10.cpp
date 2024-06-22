@@ -158,9 +158,6 @@ void XSpaceBioV10Board::AFE4490_Led_intesity(float percentageIR, float percentag
 		AFE4490_write(LEDCNTRL, ((value1<<8)|value2));
 }
 
-double R_lookup[10] = {0.53861, 0.55417, 0.58322, 0.63, 0.697, 0.829, 0.9199, 1.04, 1.126, 1.2};
-double SPO2_lookup[10] = {100, 99, 98, 97, 95, 90, 85, 80, 75, 70};
-
 double XSpaceBioV10Board::AFE4490_SPO2(double Rx){
 	double SPO2;
 
@@ -175,7 +172,6 @@ double XSpaceBioV10Board::AFE4490_SPO2(double Rx){
 	if(Rx>R_lookup[9])SPO2=70;
 
 	return SPO2;
-
 }
 
 
