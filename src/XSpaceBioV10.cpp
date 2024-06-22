@@ -183,28 +183,33 @@ void XSpaceBioV10Board::SignalAnalizer(double *muestras, double *time_m, double 
 	double temp_max = 0;
 	double temp_min = 10000000000000;
 	
+	//Getting max and min values
 	for(int i=0; i<no_muestras; i++){
 		if(muestras[i]>temp_max)temp_max = muestras[i];
 		if(muestras[i]<temp_min)temp_min = muestras[i];
 	}
 
+	//Gettin media offset
 	double moffset = (temp_max+temp_min)/2;
 
+	//Removing offset to store in muestras_pro array
 	for(int i=0; i<no_muestras; i++){
 		muestras_pro[i] =  muestras[i] - moffset;
 	}
 
+	//save max and min values without offset
 	*max = temp_max-moffset;
 	*min = temp_min-moffset;
 
+	//Variables for geeting frequency
 	int Posiciones[50];
 	int j=0;
 	bool numx=true;
 
+	//getting zero cross values
 	for(int i=5; i<no_muestras; i++){
 		if( (muestras_pro[i]>0) && muestras_pro[i-5]<0  && numx==true){
 			Posiciones[j] = time_m[i];
-	//muestras_pro[i]=10000;
 			j++;
 			numx=false;
 		}
@@ -216,10 +221,8 @@ void XSpaceBioV10Board::SignalAnalizer(double *muestras, double *time_m, double 
 		SumaPeriodos = SumaPeriodos + (double)(Posiciones[k]-Posiciones[k-1]);
 	}
 	SumaPeriodos = SumaPeriodos/1000000;
-	
-	//muestras_pro[0]=20000;
-	//muestras_pro[no_muestras-1]=-20000;
 
-	//*freq = ((double)(j-1))/SumaPeriodos;
+	//return freq in Hz
+	*freq = ((double)(j-1))/SumaPeriodos;
 
 }

@@ -11,6 +11,15 @@ Welcome to the XSpaceBioV10 library, developed to support biomedical projects wi
 
 ## Installation
 
+### PlatformIO
+
+To use XSpaceIoT with PlatformIO, add the following line to your platformio.ini file under the lib_deps section:
+
+```ini
+lib_deps =
+  https://github.com/TheXSpaceAcademy/XSpaceBioV10.git#main
+```
+
 ### Arduino IDE
 
 To install the XSpaceBioV10 library, download the ZIP file of the repository and follow these steps in the Arduino IDE:

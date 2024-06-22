@@ -169,6 +169,7 @@ class XSpaceBioV10Board {
        @param freq Pointer to store the dominant frequency in the signal.
     */
     void SignalAnalizer(double *samples, double *time_m, double *processed_samples, int num_samples, double *max, double *min, double *freq);
+
 };
 
 

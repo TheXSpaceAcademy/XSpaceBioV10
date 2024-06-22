@@ -1,6 +1,6 @@
 {
     "name": "XSpaceBioV10",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Library used for XSpace Bio v1.0 Boards and another ESP32 based boards",
     "keywords": "biomedical, ecg, ekg, ppg, esp32, iot, xspace",
     "repository":
