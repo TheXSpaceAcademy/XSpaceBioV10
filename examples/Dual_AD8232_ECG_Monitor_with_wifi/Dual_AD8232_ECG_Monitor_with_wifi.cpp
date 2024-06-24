@@ -17,11 +17,13 @@ XSpaceBioV10Board Board;
 XSEthernet XSnet;
 
 // Variables for signal processing
-int MaxDataIndex = 400;
+#define MaxDataIndex 400
+
 double ECGData[MaxDataIndex];
 double ECGData_procesed[MaxDataIndex];
 double ECGData_time[MaxDataIndex];
 double bpm = 0;
+int i = 0;
 
 //Declaration por GetBPM() function
 double GetBPM();
@@ -33,7 +35,7 @@ void setup() {
   Board.init();
 
   XSnet.Wifi_init("Delta","c9aa28ba93");
-  XSnet.UDP_Connect("192.168.31.150",55000); //You can use Aurora App from www.xspace.pe
+  XSnet.UDP_Connect("192.168.31.150",55000); //You can use Aurora App from www.xspace.pe for wireless com
   
   // Activate the AD8232 sensors to begin ECG data acquisition
   Board.AD8232_Wake(AD8232_XS1);
@@ -49,9 +51,11 @@ void loop() {
   ECGData_time[i]=micros(); //Storing time (uS) of the current sammple
 
   // Read and print the voltage (millivolts) readings from both AD8232 sensors to the serial monitor
-  Serial.println((String)ECGData_procesed[i] + " " + (String)ECGData_procesed[i] + " " + (String)bpm);
-  XSnet.println((String)ECGData_procesed[i] + " " + (String)ECGData_procesed[i] + " " + (String)bpm);
+  Serial.println((String)ECGData_procesed[i] + " " + (String)ECGData[i] + " " + (String)bpm);
+  XSnet.println((String)ECGData_procesed[i] + " " + (String)ECGData[i] + " " + (String)bpm);
   
+  i++;
+
   if(i==MaxDataIndex){
     bpm =  GetBPM();
     i = 0;
